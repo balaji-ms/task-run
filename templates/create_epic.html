@@ -1,0 +1,42 @@
+{% extends "base_layout.html" %}
+
+{% block title %}
+Create Epic
+{% endblock %}
+
+{% block main %}
+<div class="container">
+    <h2 class="text-center">Create Epic</h2>
+    <form action="{{ url_for('add_epic', project_id=project_id) }}" method="POST" class="row g-3 justify-content-center">
+        <input type="hidden" name="project_id" value="{{ project_id }}">
+        <div class="col-md-6">
+            <div class="form-floating mb-3">
+                <label for="epic_name">Epic Name:</label>
+                <input type="text" id="epic_name" name="epic_name" class="form-control" placeholder=" ">
+            </div>
+
+            <div class="form-floating mb-3">
+                <label for="epic_description">Epic description:</label>
+                <textarea id="epic_description" name="epic_description" class="form-control" placeholder=" " rows="5" required></textarea>
+            </div>
+
+            <div class="form-floating mb-3">
+                <label for="start_date">Start date:</label>
+                <input type="date" id="start_date" name="start_date" class="form-control" placeholder=" " required>
+            </div>
+
+            <div class="form-floating mb-3">
+                <label for="end_date">End date:</label>
+                <input type="date" id="end_date" name="end_date" class="form-control" placeholder=" " required>
+            </div>
+
+            <div class="form-group">
+                <div class="d-grid">
+                    <button type="submit" class="btn btn-primary">Create Epic</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+{% endblock %}

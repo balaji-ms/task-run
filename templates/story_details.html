@@ -1,0 +1,146 @@
+{% extends "base_layout.html" %}
+
+{% block title %}
+{{ story.StoryName }} - Story Details
+{% endblock %}
+
+{% block main %}
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% for category, message in messages %}
+    <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+      {{ message }}
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+  {% endfor %}
+{% endwith %}
+<div class="container-fluid">
+
+  <div class="row">
+    <div class="col-md-6">
+      <h3>{{ story.StoryName }} - Details</h3>
+    </div>
+    {% if user.User_Role not in ['Member', 'Team Lead'] %}
+    <div class="col-md-4 offset-md-2">
+      <form action="{{ url_for('update_story', story_id=story.id) }}" method="GET" style="text-align: right;">
+        <button type="submit" class="btn btn-warning">Update {{ story.StoryName }} - Story</button>
+      </form>
+    </div>
+    {% endif %}
+  </div>
+</div>
+
+<br>
+
+<div class="row">
+  <div class="col-sm-3">
+    <div class="card text-center bg-primary text-white">
+      <div class="card-body">
+        <h5 class="card-title">Start Date</h5>
+        <p class="card-text">{{ story.StartDate }}</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-sm-3">
+    <div class="card text-center bg-primary text-white">
+      <div class="card-body">
+        <h5 class="card-title">End Date</h5>
+        <p class="card-text">{{ story.EndDate }}</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-sm-3">
+    <div class="card  text-center bg-primary text-white">
+      <div class="card-body">
+        <h5 class="card-title">Creation Date</h5>
+        <p class="card-text">{{ story.CreationDate.date() }}</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-sm-3">
+    <div class="card  text-center bg-primary text-white">
+      <div class="card-body">
+        <h5 class="card-title">Created By</h5>
+        <p class="card-text">{{ story.CreatedBy }}</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<br>
+
+<div class="row">
+  <div class="col-sm-12">
+    <div class="card text-white bg-secondary">
+      <div class="card-body">
+        <h5 class="card-title">Story Description</h5>
+        <p class="card-text">{{ story.StoryDescription }}</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<br>
+
+<div class="row">
+<div class="col-md-7">
+<h2>Subtask in {{ story.StoryName }} - Story</h2>
+</div>
+{% if user.User_Role not in ['Member'] %}
+<div class="col-md-4 offset-md-1">
+  <form action="{{ url_for('add_subtask', story_id=story.id) }}" method="GET" style="text-align: right;">
+    <button type="submit" class="btn btn-success">Add a SubTask to {{ story.StoryName}} - Story</button>
+  </form>
+</div>
+{% endif %}
+</div>
+
+  <table class="table table-striped table-bordered table-hover">
+    <thead>
+      <tr>
+        <th scope="col">Subtask ID</th>
+        <th scope="col">Subtask Name</th>
+        <th scope="col">Sub Task Description</th>
+        <th scope="col">Assigned To</th>
+        <th scope="col">Start Date</th>
+        <th scope="col">End Date</th>
+        <th scope="col">Created By</th>
+        <th scope="col">Creation Date</th>
+        <th scope="col">Status</th>
+        {% if user.User_Role not in ['Member'] %}
+        <th scope="col">Actions</th>
+        {% endif %}
+      </tr>
+    </thead>
+    <tbody>
+      {% for subtask in subtasks %}
+      <tr>
+        <td scope="row">{{ subtask.id }}</td>
+        <td>{{ subtask.SubtaskName }}</td>
+        <td>{{ subtask.SubtaskDescription }}</td>
+        <td>{{ subtask.AssignedTo.split('@')[0].lower() }}</td>
+        <td>{{ subtask.StartDate }}</td>
+        <td>{{ subtask.EndDate }}</td>
+        <td>{{ subtask.CreatedBy.split('@')[0].lower() }}</td>
+        <td>{{ subtask.CreationDate.date() }}</td>
+        <td>{{ subtask.Status }}</td>
+        {% if user.User_Role not in ['Member'] %}
+        <td>
+          <form action="{{ url_for('delete_subtask', subtask_id=subtask.id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this subtask?');">
+            <button type="submit" class="btn btn-danger btn-sm" {% if subtask.CreatedBy.split('@')[0].lower() != user.Email.split('@')[0].lower() and user.User_Role not in ['Admin'] %} disabled{% endif %}>Delete</button>
+          </form>
+          <br>
+          <form action="{{ url_for('update_subtask', subtask_id=subtask.id) }}" method="GET">
+            <button type="submit" class="btn btn-primary btn-sm" {% if subtask.CreatedBy.split('@')[0].lower() != user.Email.split('@')[0].lower() and user.User_Role not in ['Admin'] %} disabled{% endif %}>Update</button>
+          </form>
+        </td>
+        {% endif %}
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

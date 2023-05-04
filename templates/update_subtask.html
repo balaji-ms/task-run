@@ -1,0 +1,58 @@
+{% extends "base_layout.html" %}
+
+{% block title %}
+Update Subtask - {{ subtask.SubtaskName }}
+{% endblock %}
+
+{% block main %}
+<div class="text-center">
+  <h2>Update - {{ subtask.SubtaskName }}</h2>
+</div>
+<form method="POST" action="{{ url_for('update_subtask', subtask_id=subtask.id) }}" class="row g-3 justify-content-center">
+  <div class="col-md-6">
+    <div class="form-group">
+      <label for="SubtaskName" class="form-label">Subtask Name:</label>
+      <input type="text" id="SubtaskName" name="SubtaskName" class="form-control" value="{{ subtask.SubtaskName }}" required>
+    </div>
+
+    <div class="form-group">
+      <label for="SubtaskDescription" class="form-label">Subtask Description:</label>
+      <textarea id="SubtaskDescription" name="SubtaskDescription" rows="5" class="form-control" required>{{ subtask.SubtaskDescription }}</textarea>
+    </div>
+
+    <div class="form-group">
+      <label for="CreatedBy" class="form-label">Created By:</label>
+      <input type="text" id="CreatedBy" name="CreatedBy" class="form-control" value="{{ subtask.CreatedBy.split('@')[0].lower() }}" required disabled>
+    </div>
+
+    <div class="form-floating mb-3">
+      <label for="assigned_to">Assigned to:</label>
+      <select id="assigned_to" name="AssignedTo" class="form-select custom-select" required>
+        <option value="">-- Select --</option>
+        {% for member in Members %}
+        <option value="{{ member.Email.split('@')[0].lower() }}" {% if subtask.AssignedTo == member.Email.split('@')[0].lower() or (not subtask.AssignedTo and loop.first) %}selected{% endif %}>{{ member.Email.split('@')[0].lower() }}</option>
+        {% endfor %}
+        {% for team_lead in Team_Lead %}
+        <option value="{{ team_lead.Email.split('@')[0].lower() }}" {% if subtask.AssignedTo == team_lead.Email.split('@')[0].lower() %}selected{% endif %}>{{ team_lead.Email.split('@')[0].lower() }}</option>
+        {% endfor %}
+      </select>
+    </div>     
+
+    <div class="form-group">
+      <label for="StartDate" class="form-label">Start Date:</label>
+      <input type="date" id="StartDate" name="StartDate" class="form-control" value="{{ subtask.StartDate }}" required>
+    </div>
+
+    <div class="form-group">
+      <label for="EndDate" class="form-label">End Date:</label>
+      <input type="date" id="EndDate" name="EndDate" class="form-control" value="{{ subtask.EndDate }}" required>
+    </div>
+
+    <div class="form-group">
+      <div class="d-grid">
+        <input type="submit" value="Update" class="btn btn-primary">
+      </div>
+    </div>
+  </div>
+</form>
+{% endblock %}

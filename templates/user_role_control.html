@@ -1,0 +1,52 @@
+{% extends 'base_layout.html' %}
+
+{% block title %}
+View Users and Change User Roles
+{% endblock %}
+{% block main %}
+<script>
+    function updateUserRole(newRole, userId) {
+        fetch(`/update_user_role/${userId}/${newRole}`)
+        .then(response => {
+            console.log('User role updated successfully');
+        })
+        .catch(error => {
+            console.log('Error updating user role:', error);
+        });
+    }
+</script>
+<div>
+<div class="row">
+  <div class="col-8"><h2>User List</h2></div>
+</div>
+<table class="table table-striped table-bordered table-hover">
+<thead>
+<tr>
+<th scope="col">User ID</th>
+<th scope="col">Name</th>
+<th scope="col">Email</th>
+<th scope="col">Designation</th>
+<th scope="col">User Role</th>
+</tr>
+</thead>
+<tbody>
+    {% for user in users %}
+    <tr>
+    <td scope="row">{{ user.id }}</td>
+    <td>{{ user.Name }}</td>
+    <td>{{ user.Email }}</td>
+    <td>{{ user.Designation }}</td>
+    <td>
+    <select name="user_role" onchange="updateUserRole(this.value, {{ user.id }})">
+    <option value="Admin" {% if user.User_Role == 'Admin' %}selected{% endif %}>Admin</option>
+    <option value="Manager" {% if user.User_Role == 'Manager' %}selected{% endif %}>Manager</option>
+    <option value="Team Lead" {% if user.User_Role == 'Team Lead' %}selected{% endif %}>Team Lead</option>
+    <option value="Member" {% if user.User_Role == 'Member' %}selected{% endif %}>Member</option>
+    </select>
+    </td>
+    </tr>
+    {% endfor %}
+</tbody>    
+</table>
+</div>
+{% endblock %}

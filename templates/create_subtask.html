@@ -1,0 +1,53 @@
+{% extends "base_layout.html" %}
+
+{% block title %}
+Create Sub-Task
+{% endblock %}
+
+{% block main %}
+<div class="container">
+  <h2 class="text-center">Create Sub-Task</h2>
+  <form action="{{ url_for('add_subtask', story_id=story_id) }}" method="POST" class="row g-3 justify-content-center">
+    <div class="col-md-6">
+      <div class="form-floating mb-3">
+        <label for="subtask_name">Sub-Task Name:</label>
+        <input type="text" id="subtask_name" name="subtask_name" class="form-control" placeholder=" " required>
+      </div>
+
+      <div class="form-floating mb-3">
+        <label for="assigned_to">Assigned to:</label>
+        <select id="assigned_to" name="assigned_to" class="form-select custom-select" required>
+          <option value="">-- Select --</option>
+          {% for member in Members %}
+          <option value="{{ member.Email }}">{{ member.Email.split('@')[0].lower()  }}</option>
+          {% endfor %}
+          {% for team_lead in Team_Lead %}
+          <option value="{{ team_lead.Email }}">{{ team_lead.Email.split('@')[0].lower() }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      
+      <div class="form-floating mb-3">
+        <label for="subtask_description">Sub-Task description:</label>
+        <textarea id="subtask_description" name="subtask_description" class="form-control" placeholder=" " rows="5" required></textarea>
+      </div>
+
+      <div class="form-floating mb-3">
+        <label for="start_date">Start date:</label>
+        <input type="date" id="start_date" name="start_date" class="form-control" placeholder=" " required>
+      </div>
+
+      <div class="form-floating mb-3">
+        <label for="end_date">End date:</label>
+        <input type="date" id="end_date" name="end_date" class="form-control" placeholder=" " required>
+      </div>
+
+      <div class="form-group">
+        <div class="d-grid">
+          <button type="submit" class="btn btn-primary">Create Sub-Task</button>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+{% endblock %}

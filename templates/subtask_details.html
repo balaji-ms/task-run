@@ -1,0 +1,61 @@
+{% extends "base_layout.html" %}
+
+{% block title %}
+Subtask Details - {{ subtask.SubtaskName }}
+{% endblock %}
+
+{% block main %}
+
+<div class="text-center">
+  <h2>{{ subtask.SubtaskName }} - SubTask Status</h2>
+</div>
+<form method="POST" action="{{ url_for('subtask_details', subtask_id=subtask.id) }}" class="row g-3 justify-content-center">
+  <div class="col-md-6">
+    <div class="form-group">
+      <label for="SubtaskName" class="form-label">Subtask Name:</label>
+      <input type="text" id="SubtaskName" name="SubtaskName" class="form-control" value="{{ subtask.SubtaskName }}" required disabled>
+    </div>
+
+    <div class="form-group">
+      <label for="SubtaskDescription" class="form-label">Subtask Description:</label>
+      <textarea id="SubtaskDescription" name="SubtaskDescription" rows="5" class="form-control" required disabled>{{ subtask.SubtaskDescription }}</textarea>
+    </div>
+
+    <div class="form-group">
+      <label for="CreatedBy" class="form-label">Created By:</label>
+      <input type="text" id="CreatedBy" name="CreatedBy" class="form-control" value="{{ subtask.CreatedBy.split('@')[0].lower() }}" required disabled>
+    </div>  
+
+    <div class="form-group">
+      <label for="StartDate" class="form-label">Start Date:</label>
+      <input type="date" id="StartDate" name="StartDate" class="form-control" value="{{ subtask.StartDate }}" required disabled>
+    </div>
+
+    <div class="form-group">
+      <label for="EndDate" class="form-label">End Date:</label>
+      <input type="date" id="EndDate" name="EndDate" class="form-control" value="{{ subtask.EndDate }}" required disabled>
+    </div>
+
+    <div class="form-group">
+      <label for="staticEmail" class="form-label">Current SubTask Status:</label>
+      <input type="text" readonly class="form-control-plaintext" id="subtaskstatus" value="{{ subtask.Status }}">
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+          <form method="POST">
+            <input type="hidden" name="status" value="Complete">
+            <button type="submit" class="btn btn-success">Mark SubTask as Completed</button>
+          </form>
+        </div>
+      
+        <div class="col-md-6">
+          <form method="POST">
+            <input type="hidden" name="status" value="InProgress">
+            <button type="submit" class="btn btn-danger">Mark SubTask as In-Progress</button>
+          </form>
+        </div>
+      </div>
+
+{% endblock %}
+  

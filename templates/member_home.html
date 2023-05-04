@@ -1,0 +1,75 @@
+{% extends 'base_layout.html' %}
+
+{% block title %}
+Member Home
+{% endblock %}
+
+{% block main %}
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% for category, message in messages %}
+<div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+{{ message }}
+<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+<span aria-hidden="true">×</span>
+</button>
+</div>
+{% endfor %}
+{% endwith %}
+
+<h3>Sub Tasks Assigned to You</h3>
+{% if not assigned_subtasks_inprogress %}
+
+  <p>You have no SubTasks Assigned To You at the moment. Come back and Check later.</p>
+{% else %}
+  {% for subtask in assigned_subtasks_inprogress %}
+    <div class="card bg-light col-10">
+      <div class="card-body">
+        <div class="d-flex justify-content-between">
+          <h5 class="card-title">{{ subtask.SubtaskName }}</h5>
+          <a href="{{ url_for('subtask_details', subtask_id=subtask.id) }}" class="btn btn-primary">Click to Complete SubTask</a>
+        </div>
+        <p class="card-text">{{ subtask.SubtaskDescription }}</p>
+      </div>
+      <div class="card-footer bg-light">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-md-4">Creation Date: {{ subtask.CreationDate.strftime('%d-%m-%Y') }}</div>
+            <div class="col-md-3">Due Date: {{ subtask.EndDate.strftime('%d-%m-%Y') }}</div>
+            <div class="col-md-3">Assigned By: {{ subtask.CreatedBy.split('@')[0].lower() }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+  {% endfor %}
+{% endif %}
+
+<h3>Sub Tasks Completed by You</h3>
+{% if not assigned_subtasks_complete %}
+
+  <p>You have not Completed any SubTasks. Your Completed SubTasks will appear here as you finish them.</p>
+{% else %}
+  {% for subtask in assigned_subtasks_complete %}
+
+    <div class="card bg-light col-10">
+      <div class="card-body">
+        <div class="d-flex justify-content-between">
+          <h5 class="card-title">{{ subtask.SubtaskName }}</h5>
+          <a href="{{ url_for('subtask_details', subtask_id=subtask.id) }}" class="btn btn-success">Click to View SubTask</a>
+        </div>
+        <p class="card-text">{{ subtask.SubtaskDescription }}</p>
+      </div>
+      <div class="card-footer bg-light">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-md-4">Creation Date: {{ subtask.CreationDate.strftime('%d-%m-%Y') }}</div>
+            <div class="col-md-3">Due Date: {{ subtask.EndDate.strftime('%d-%m-%Y') }}</div>
+            <div class="col-md-3">Assigned By: {{ subtask.CreatedBy.split('@')[0].lower() }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+  {% endfor %}
+{% endif %}
+{% endblock %}

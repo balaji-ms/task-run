@@ -1,0 +1,71 @@
+{% extends "base_layout.html" %}
+
+{% block title %}
+Update Project - {{ project.ProjectName }}
+{% endblock %}
+
+{% block main %}
+<div class="text-center">
+    <h2>Update Project - {{ project.ProjectName }}</h2>
+</div>
+<form method="POST" action="{{ url_for('update_project', project_id=project.id) }}" class="row g-3 justify-content-center">
+    <div class="col-md-6">
+        <div class="form-group">
+            <label for="name" class="form-label">Project Name:</label>
+            <input type="text" id="name" name="ProjectName" class="form-control" value="{{ project.ProjectName }}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="owner" class="form-label">Project Owner:</label>
+            <input type="text" id="owner" name="ProjectOwner" class="form-control" value="{{ project.ProjectOwner }}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="description" class="form-label">Project Description:</label>
+            <textarea id="description" name="ProjectDescription" rows="5" class="form-control" required>{{ project.ProjectDescription }}</textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="manager" class="form-label">Project Manager:</label>
+            <select id="manager" name="ProjectManager" class="form-select custom-select" required>
+                <option value="">--Select--</option>
+                {% for manager in Managers %}
+                <option value="{{ manager.Email.split('@')[0].lower() }}" {% if project.ProjectManager == manager.Email.split('@')[0].lower() %}selected{% endif %}>{{ manager.Email.split('@')[0].lower() }}</option>
+                {% endfor %}
+                {% for admin in Admins %}
+                <option value="{{ admin.Email.split('@')[0].lower() }}" {% if project.ProjectManager == admin.Email.split('@')[0].lower() %}selected{% endif %}>{{ admin.Email.split('@')[0].lower() }}</option>
+                {% endfor %}
+            </select>
+        </div>    
+
+<div class="form-group">
+    <label for="members" class="form-label">Members:</label>
+    <select id="members" name="members[]" multiple class="form-select custom-select" required>
+        <option value="">--Select--</option>
+        {% for member in Members %}
+        <option value="{{ member.Email.split('@')[0].lower() }}" {% if member.Email.split('@')[0].lower() in project.Members %}selected{% endif %}>{{ member.Email.split('@')[0].lower() }}</option>
+        {% endfor %}
+        {% for team_lead in Team_Lead %}
+        <option value="{{ team_lead.Email.split('@')[0].lower() }}" {% if team_lead.Email.split('@')[0].lower() in project.Members %}selected{% endif %}>{{ team_lead.Email.split('@')[0].lower() }}</option>
+        {% endfor %}
+    </select>
+</div>
+
+        <div class="form-group">
+            <label for="start-date" class="form-label">Start Date:</label>
+            <input type="date" id="start-date" name="StartDate" class="form-control" value="{{ project.StartDate }}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="end-date" class="form-label">End Date:</label>
+            <input type="date" id="end-date" name="EndDate" class="form-control" value="{{ project.EndDate }}" required>
+        </div>
+
+        <div class="form-group">
+            <div class="d-grid">
+                <input type="submit" value="Update Project" class="btn btn-primary">
+            </div>
+        </div>
+    </div>
+</form>  
+{% endblock %}

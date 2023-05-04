@@ -1,0 +1,122 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&display=swap');
+
+/* Reset default styles */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body{
+  background-color: white;
+  font-family: 'Montserrat', sans-serif;}
+
+.navbar-brand img {
+  height: 40px;
+  margin-right: 10px;
+}
+.navbar-nav li {
+  padding-right: 20px;
+  color: white !important;
+}
+.nav-link {
+  color: white !important;
+}
+.dropdown-menu {
+  background-color: #343a40;
+}
+.dropdown-item {
+  color: white !important;
+}
+
+/* Navbar styles */
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background-color: white;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.logo img {
+  height: 35px;
+  width: 120px;
+}
+
+.user {
+  position: relative;
+}
+
+.user a {
+  font-weight: bold;
+  text-transform: uppercase;
+  color: white;
+  text-decoration: none;
+}
+
+.user-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  z-index: 1;
+  background-color: white;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  display: none;
+  padding: 0.5rem;
+}
+
+.user:hover .user-menu {
+  display: block;
+}
+
+.user-menu a {
+  display: block;
+  padding: 0.5rem;
+  color: white;
+  text-decoration: none;
+}
+
+
+/* Main content styles */
+main {
+  margin: 20px 0 0 20px;
+  padding: 1rem;
+}
+
+.form-element {
+    display: block;
+    margin-bottom: 10px;
+}
+
+.alert {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 100;
+}
+
+.alert-dismissible .close {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 0.75rem 1.25rem;
+  z-index: 100;
+}
+
+.alert-dismissible.fade.show {
+  animation: fadeOut 4s ease-in-out forwards;
+}
+
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}

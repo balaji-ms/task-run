@@ -1,0 +1,43 @@
+{% extends "base_layout.html" %}
+
+{% block title %}
+Create Story
+{% endblock %}
+
+{% block main %}
+<div class="container">
+    <h2 class="text-center">Create Story</h2>
+    <form action="{{ url_for('add_story', project_id=project_id, epic_id=epic_id) }}" method="POST" class="row g-3 justify-content-center">
+        <div class="col-md-6">
+            <div class="form-floating mb-3">
+                <label for="story_name">Story Name:</label>
+                <input type="text" id="story_name" name="story_name" class="form-control" placeholder="Enter Story Name" required>
+            </div>
+
+            <div class="form-floating mb-3">
+                <label for="story_description">Story description:</label>
+                <textarea id="story_description" name="story_description" class="form-control" placeholder="Enter Story Description" rows="5" required></textarea>
+            </div>
+            
+            <div class="form-floating mb-3">
+                <label for="start_date">Start date:</label>
+                <input type="date" id="start_date" name="start_date" class="form-control" placeholder=" " required>
+            </div>
+
+            <div class="form-floating mb-3">
+                <label for="end_date">End date:</label>
+                <input type="date" id="end_date" name="end_date" class="form-control" placeholder=" " required>
+            </div>
+
+            <input type="hidden" id="project_id" name="project_id" value="{{ project_id }}">
+            <input type="hidden" id="epic_id" name="epic_id" value="{{ epic_id }}">
+
+            <div class="form-group">
+                <div class="d-grid">
+                    <button type="submit" class="btn btn-primary">Create Story</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}

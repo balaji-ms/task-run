@@ -1,0 +1,138 @@
+{% extends "base_layout.html" %}
+
+{% block title %}
+{{ epic.EpicName }} - Epic Details
+{% endblock %}
+
+{% block main %}
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% for category, message in messages %}
+    <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+      {{ message }}
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+  {% endfor %}
+{% endwith %}
+<div class="container-fluid">
+
+  <div class="row">
+    <div class="col-md-6">
+      <h3>{{ epic.EpicName }} - Details</h3>
+    </div>
+    {% if user.User_Role not in ['Member', 'Team Lead'] %}
+    <div class="col-md-4 offset-md-2">
+      <form action="{{ url_for('update_epic', epic_id=epic.id) }}" method="GET" style="text-align: right;">
+        <button type="submit" class="btn btn-warning">Update Epic Details</button>
+      </form>
+    </div>
+    {% endif %}
+  </div>
+</div>
+
+<br>
+<div class="row">
+  <div class="col-sm-3">
+    <div class="card text-center bg-primary text-white">
+      <div class="card-body">
+        <h5 class="card-title">Start Date</h5>
+        <p class="card-text">{{ epic.StartDate }}</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-sm-3">
+    <div class="card text-center bg-primary text-white">
+      <div class="card-body">
+        <h5 class="card-title">End Date</h5>
+        <p class="card-text">{{ epic.EndDate }}</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-sm-3">
+    <div class="card  text-center bg-primary text-white">
+      <div class="card-body">
+        <h5 class="card-title">Creation Date</h5>
+        <p class="card-text">{{ epic.CreationDate.date() }}</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-sm-3">
+    <div class="card  text-center bg-primary text-white">
+      <div class="card-body">
+        <h5 class="card-title">Created By</h5>
+        <p class="card-text">{{ epic.CreatedBy }}</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<br>
+
+<div class="row">
+  <div class="col-sm-12">
+    <div class="card text-white bg-secondary">
+      <div class="card-body">
+        <h5 class="card-title">Epic Description</h5>
+        <p class="card-text">{{ epic.EpicDescription }}</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<br>
+
+<div class="row">
+  <div class="col-md-7">
+  <h2>Stories in {{ epic.EpicName }} - Epic</h2>
+  </div>
+{% if user.User_Role not in ['Member', 'Team Lead'] %}
+  <div class="col-md-4 offset-md-1">
+    <form action="{{ url_for('add_story', epic_id = epic.id) }}" method="GET" style="text-align: right;">
+    <button type="submit" class="btn btn-success ">Add story to {{ epic.EpicName }}</button>
+    </form>
+</div>
+{% endif %}
+</div>
+
+  <table class="table table-striped table-bordered table-hover">
+    <thead>
+      <tr>
+        <th scope="col">Story ID</th>
+        <th scope="col">Story Name</th>
+        <th scope="col">Story Description</th>
+        <th scope="col">Created By</th>
+        <th scope="col">Start Date</th>
+        <th scope="col">End Date</th>
+        <th scope="col">Creation Date</th>
+        {% if user.User_Role not in ['Member', 'Team Lead'] %}
+        <th scope="col">Actions</th>
+        {% endif %}
+      </tr>
+    </thead>
+    <tbody>
+      {% for story in stories %}
+      <tr>
+        <td scope="row">{{ story.id }}</td>
+        <td><a href="{{ url_for('story_details', story_id=story.id) }}">{{ story.StoryName }}</a></td>
+        <td>{{ story.StoryDescription }}</td>
+        <td>{{ story.CreatedBy.split('@')[0].lower() }}</td>
+        <td>{{ story.StartDate }}</td>
+        <td>{{ story.EndDate }}</td>
+        <td>{{ story.CreationDate.date() }}</td>
+        {% if user.User_Role not in ['Member', 'Team Lead'] %}
+        <td>
+            <form action="{{ url_for('delete_story', story_id=story.id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this story?');">
+              <input type="hidden" name="_method" value="DELETE">
+              <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+            </form>
+        </td>
+        {% endif %}
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

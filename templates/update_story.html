@@ -1,0 +1,45 @@
+{% extends "base_layout.html" %}
+
+{% block title %}
+Update Story - {{ story.StoryName }}
+{% endblock %}
+
+{% block main %}
+<div class="text-center">
+  <h2>Update {{ story.StoryName }}</h2>
+</div>
+<form method="POST" action="{{ url_for('update_story', story_id=story.id) }}" class="row g-3 justify-content-center">
+  <div class="col-md-6">
+    <div class="form-group">
+      <label for="StoryName" class="form-label">Story Name:</label>
+      <input type="text" id="StoryName" name="StoryName" class="form-control" value="{{ story.StoryName }}" required>
+    </div>
+
+    <div class="form-group">
+      <label for="StoryDescription" class="form-label">Story Description:</label>
+      <textarea id="StoryDescription" name="StoryDescription" rows="5" class="form-control" required>{{ story.StoryDescription }}</textarea>
+    </div>
+
+    <div class="form-group">
+      <label for="CreatedBy" class="form-label">Created By:</label>
+      <input type="text" id="CreatedBy" name="CreatedBy" class="form-control" value="{{ story.CreatedBy }}" required disabled>
+    </div>
+
+    <div class="form-group">
+      <label for="StartDate" class="form-label">Start Date:</label>
+      <input type="date" id="StartDate" name="StartDate" class="form-control" value="{{ story.StartDate }}" required>
+    </div>
+
+    <div class="form-group">
+      <label for="EndDate" class="form-label">End Date:</label>
+      <input type="date" id="EndDate" name="EndDate" class="form-control" value="{{ story.EndDate }}" required>
+    </div>
+
+    <div class="form-group">
+      <div class="d-grid">
+        <input type="submit" value="Update" class="btn btn-primary">
+      </div>
+    </div>
+  </div>
+</form>
+{% endblock %}

@@ -1,0 +1,87 @@
+{% extends "base_layout.html" %}
+
+{% block title %}
+Admin Overview Dashboard
+{% endblock %}
+
+{% block main %}
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% for category, message in messages %}
+    <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+      {{ message }}
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+  {% endfor %}
+{% endwith %}
+<div class="container">
+<h2>Admin Dashboard</h2>
+<div class="row">
+    <div class="col-sm-3">
+      <div class="card shadow border-primary text-center">
+        <div class="card-body">
+          <h3 class="card-title">Total Projects</h3>
+          <h2 class="card-text text-primary">{{ total_unique_projects }}</h2>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-sm-3">
+        <div class="card shadow border-primary text-center">
+          <div class="card-body">
+            <h3 class="card-title">Total Epics</h3>
+            <h2 class="card-text text-primary">{{ total_unique_epics }}</h2>
+          </div>
+        </div>
+    </div>
+
+    <div class="col-sm-3">
+        <div class="card shadow border-primary text-center">
+          <div class="card-body">
+            <h3 class="card-title">Total Stories</h3>
+            <h2 class="card-text text-primary">{{ total_unique_stories }}</h2>
+          </div>
+        </div>
+    </div>
+
+    <div class="col-sm-3">
+        <div class="card shadow border-primary text-center">
+          <div class="card-body">
+            <h3 class="card-title">Total SubTasks</h3>
+            <h2 class="card-text text-primary">{{ total_unique_subtasks }}</h2>
+          </div>
+        </div>
+    </div>
+</div>
+<br/>
+<div class="row">
+  <div class="col-sm-8">
+    <div class="card shadow border-primary text-center">
+      <div class="card-body">
+        <h3>No. of SubTasks for the Past 30 Days</h3>
+      <div id="subtask_fig" style="height: 300px;"></div>
+          <script>
+            var subtask_fig = {{ subtask_fig_json|safe }};
+            Plotly.newPlot('subtask_fig', subtask_fig.data, subtask_fig.layout);
+          </script>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-4">
+    <div class="card shadow border-primary text-center">
+      <h3>User Role</h3>
+      <div id="user_role" style="height: 350px;"></div>
+        <script>
+          var user_role = {{ user_role_json|safe }};
+          Plotly.newPlot('user_role', user_role.data, user_role.layout);
+        </script>        
+      </div>
+    </div>
+  </div>
+</div>
+
+</div>
+{% endblock %}

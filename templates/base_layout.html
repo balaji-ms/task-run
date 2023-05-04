@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>{% block title %}
+      {% endblock %}</title>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <!-- Bootstrap CSS -->
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+      <!-- jQuery library -->
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+      <!-- Popper JS -->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+      <!-- Bootstrap JavaScript -->
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+      <script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
+      <!-- Main CSS -->
+      <link href="{{ url_for('static', filename='css/base_layout-style.css') }}" rel="stylesheet">
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-md navbar-light bg-primary">
+
+      <!-- Logo  style="background-color: #396fdd;"-->
+      <a class="navbar-brand" href="{{ url_for('login') }}">
+        <img src="{{ url_for('static', filename='images/placeholder-logo.png') }}" alt="Logo">
+      </a>
+      <!-- Links -->
+      <ul class="navbar-nav">
+        {% if user.User_Role in ['Manager', 'Admin', 'Team Lead'] %}
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('show_projects') }}">Projects</a>
+        </li>
+        {% endif %}
+        {% if user.User_Role in ['Admin'] %}
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('show_users') }}">Admin</a>
+        </li>
+        {% endif %}
+        <li class="nav-item nav-link">
+          Role: {{ user.User_Role }}
+        </li>
+      </ul>
+      <!-- User login bar -->
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">{{ user.Name }}</a>
+          <div class="dropdown-menu dropdown-menu-right">
+            <a class="dropdown-item" href="{{ url_for('show_user_profile') }}">Profile</a>
+            <a class="dropdown-item" href="{{ url_for('logout') }}">Logout</a>
+          </div>
+        </li>
+      </ul>
+    </nav>
+    <main>
+      {% block main %}
+      {% endblock %}
+    </main>
+  </body>
+</html>

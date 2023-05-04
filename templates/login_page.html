@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>GWC PM App Home</title>
+  <!-- Link to Bootstrap CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <!-- Google Fonts -->
+  <link href="{{ url_for('static', filename='css/base_layout-style.css') }}" rel="stylesheet">
+  <!-- Custom styles for the login form -->
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&display=swap');
+
+body {
+  background: center bottom -0.5px / 100% 24% repeat padding-box border-box, linear-gradient(60deg, rgb(82, 67, 170), rgb(237, 80, 180)) 0% 0% / auto no-repeat scroll padding-box border-box rgb(82, 67, 170);
+  background-blend-mode: normal, normal;
+  color: rgb(255, 255, 255);
+  background-size: 100% 100%;
+  font-family: 'Montserrat', sans-serif;
+  height: 100vh;
+}
+    /* Center the logo and login form vertically */
+    .container {
+      display: flex;
+      flex-direction: column;
+      min-height: calc(100vh - 100px); /* 100px is the height of the fixed navbar */
+      margin-top: 50px;
+    }
+    /* Add some padding to the form */
+    .form {
+      padding: 30px;
+      background-color: #fff;
+      border-radius: 5px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    }
+    .form-group label {
+  color: black;
+    }
+
+    ul.list-group {
+      list-style: none;
+      padding-left: 0;
+    }
+    
+    ul.list-group li:before {
+      content: "\2713\0020";
+      font-size: 20px;
+      color: white;
+      margin-right: 10px;
+    }
+
+  .alert {
+    position: fixed;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 100;
+  }
+
+  .alert-dismissible .close {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 0.75rem 1.25rem;
+    z-index: 100;
+  }
+
+  .alert-dismissible.fade.show {
+    animation: fadeOut 4s ease-in-out forwards;
+  }
+
+  @keyframes fadeOut {
+    0% {
+      opacity: 1;
+    }
+    90% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+  </style>
+</head>
+
+<body>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% for category, message in messages %}
+    <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+      {{ message }}
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+{% endfor %}
+{% endwith %}
+
+<div class="container">
+<div class="row align-items-center justify-content-start">
+  <div class="col-sm-8 align-self-start">
+    <h1>Stay organized and on top of your tasks with our App</h1>
+    <p>Our App has loads of features to enable effective collaboration within your business such as:</p>
+    <h3>Sign in to Explore All Features</h3>
+    <ul class="list-group">
+      <li>Create and manage projects, tasks, and action items</li>
+      <br>
+      <li>Assign tasks and action items to team members and track progress</li>
+      <br>
+      <li>Collaborate with your team and clients in real-time</li>
+      <br>
+      <li>Customize it to your optimized business processes</li>
+      <br>
+      <li>Always stay in Context of the relevant tasks/action items</li>
+    </ul>
+  </div>
+  <div class="col-sm-4 align-self-start">
+      <div class="form">
+        <img src="{{ url_for('static', filename='images/placeholder-logo.png') }}" style= "width: 50%;height: auto;"
+        class="mx-auto d-block mb-4" alt="Company Logo">
+        <form method="POST" action="/">
+          {{ form.csrf_token }}
+          <div class="form-group">
+            <label for="email">Email address</label>
+            <input type="email" class="form-control" id="email" name="email" aria-describedby="emailHelp" placeholder="youremail@gwcteq.com">
+          </div>
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" class="form-control" id="password" name="password" placeholder="Password">
+          </div>
+          <button type="submit" class="btn btn-primary btn-block">Sign in</button>
+          <a href="{{ url_for('show_register') }}" class="btn btn-success btn-block">Register</a>
+        </form>
+      </div>
+  </div>
+</div>
+</div>    
+  <!-- Link to Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+</body>
+</html>
